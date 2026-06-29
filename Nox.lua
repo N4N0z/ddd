@@ -175,9 +175,9 @@ local C = {
     HotbarActive = Color3.fromRGB(31, 31, 31),
     HotbarHover  = Color3.fromRGB(38, 38, 38),
     HotbarDot    = Color3.fromRGB(220, 220, 220),
-    Accent       = Color3.fromRGB(54, 101, 255),
-    AccentDim    = Color3.fromRGB(39, 76, 196),
-    AccentText   = Color3.fromRGB(6, 7, 20),
+    Accent       = Color3.fromRGB(255, 138, 12),
+    AccentDim    = Color3.fromRGB(110, 58, 10),
+    AccentText   = Color3.fromRGB(10, 7, 2),
     KnobAccent   = Color3.fromRGB(255, 255, 255),
 }
 
@@ -206,9 +206,9 @@ local THEMES = {
         HotbarActive = Color3.fromRGB(235, 235, 235),
         HotbarHover  = Color3.fromRGB(229, 229, 229),
         HotbarDot    = Color3.fromRGB(60, 60, 60),
-        Accent       = Color3.fromRGB(245, 120, 0),
-        AccentDim    = Color3.fromRGB(255, 206, 158),
-        AccentText   = Color3.fromRGB(255, 255, 255),
+        Accent       = Color3.fromRGB(255, 138, 12),
+        AccentDim    = Color3.fromRGB(110, 58, 10),
+        AccentText   = Color3.fromRGB(10, 7, 2),
         KnobAccent   = Color3.fromRGB(255, 255, 255),
     },
     OLED = {
