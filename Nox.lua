@@ -553,17 +553,17 @@ local function buildTagFrame(player)
     local glowStroke = Instance.new("UIStroke")
     glowStroke.Thickness          = 1.1
     glowStroke.ApplyStrokeMode    = Enum.ApplyStrokeMode.Border
-    glowStroke.Color              = Color3.fromRGB(253, 128, 0)
+    glowStroke.Color              = Color3.fromRGB(255, 138, 12)
     glowStroke.Transparency       = 0.2
     glowStroke.Parent             = root
 
     local glowGrad = Instance.new("UIGradient")
     glowGrad.Color = ColorSequence.new({
-        ColorSequenceKeypoint.new(0.00, Color3.fromRGB(253, 128, 0)),
-        ColorSequenceKeypoint.new(0.40, Color3.fromRGB(253, 128, 0)),
+        ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 138, 12)),
+        ColorSequenceKeypoint.new(0.40, Color3.fromRGB(255, 138, 12)),
         ColorSequenceKeypoint.new(0.50, Color3.fromRGB(255, 255, 255)),
-        ColorSequenceKeypoint.new(0.60, Color3.fromRGB(253, 128, 0)),
-        ColorSequenceKeypoint.new(1.00, Color3.fromRGB(253, 128, 0)),
+        ColorSequenceKeypoint.new(0.60, Color3.fromRGB(255, 138, 12)),
+        ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 138, 12)),
     })
     glowGrad.Transparency = NumberSequence.new({
         NumberSequenceKeypoint.new(0.00, 1.0),
@@ -588,7 +588,7 @@ local function buildTagFrame(player)
     -- avatar ring (orange accent)
     local avRing = Instance.new("UIStroke")
     avRing.Thickness = 1
-    avRing.Color = Color3.fromRGB(253, 128, 0)
+    avRing.Color = Color3.fromRGB(255, 138, 12)
     avRing.Transparency = 0.4
     avRing.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
     avRing.Parent = avatarHolder
@@ -682,7 +682,7 @@ local function buildTagFrame(player)
     badge.Size             = UDim2.fromOffset(badgeW, 16)
     badge.AnchorPoint      = Vector2.new(1, 1)
     badge.Position         = UDim2.new(1, -badgePadR, 1, -9)
-    badge.BackgroundColor3 = Color3.fromRGB(253, 128, 0)
+    badge.BackgroundColor3 = Color3.fromRGB(255, 138, 12)
     badge.BackgroundTransparency = 0.82
     badge.BorderSizePixel  = 0
     badge.ZIndex           = 2
@@ -692,7 +692,7 @@ local function buildTagFrame(player)
     badgeCorner.Parent = badge
     local badgeStroke = Instance.new("UIStroke")
     badgeStroke.Thickness = 0.6
-    badgeStroke.Color = Color3.fromRGB(253, 128, 0)
+    badgeStroke.Color = Color3.fromRGB(255, 138, 12)
     badgeStroke.Transparency = 0.4
     badgeStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
     badgeStroke.Parent = badge
@@ -723,7 +723,7 @@ local function buildTagFrame(player)
 end
 
 -- Outline color: matches the moving UI glow color
-local TAG_OUTLINE_COLOR = Color3.fromRGB(253, 128, 0)
+local TAG_OUTLINE_COLOR = Color3.fromRGB(255, 138, 12)
 
 -- Attach an outline (Highlight, outline-only) to a player's character.
 -- Only applied to OTHER players — never the local player themselves.
@@ -1719,7 +1719,7 @@ function Library:CreateWindow(opts)
 
     -- Animated traveling outline
     local mainGlowStroke = make("UIStroke", {
-        Color = Color3.fromRGB(253, 128, 0),
+        Color = Color3.fromRGB(255, 138, 12),
         Thickness = 1.6,
         ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
         Transparency = 0,
@@ -1727,11 +1727,11 @@ function Library:CreateWindow(opts)
     })
     local mainGlowGradient = make("UIGradient", {
         Color = ColorSequence.new({
-            ColorSequenceKeypoint.new(0.00, Color3.fromRGB(253, 128, 0)),
-            ColorSequenceKeypoint.new(0.42, Color3.fromRGB(253, 128, 0)),
+            ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 138, 12)),
+            ColorSequenceKeypoint.new(0.42, Color3.fromRGB(255, 138, 12)),
             ColorSequenceKeypoint.new(0.50, Color3.fromRGB(255, 255, 255)),
-            ColorSequenceKeypoint.new(0.58, Color3.fromRGB(253, 128, 0)),
-            ColorSequenceKeypoint.new(1.00, Color3.fromRGB(253, 128, 0)),
+            ColorSequenceKeypoint.new(0.58, Color3.fromRGB(255, 138, 12)),
+            ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 138, 12)),
         }),
         Transparency = NumberSequence.new({
             NumberSequenceKeypoint.new(0.00, 1.0),
