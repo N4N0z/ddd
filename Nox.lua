@@ -34,9 +34,9 @@ local HttpService      = game:GetService("HttpService")
 local Workspace        = game:GetService("Workspace")
 
 local DEFAULT_LOGO = "rbxassetid://87405374568068"
-local TWEEN = TweenInfo.new(0.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-local NOTIFICATION_TWEEN = TweenInfo.new(0.18, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
-local PROFILE_TWEEN = TweenInfo.new(0.32, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
+local TWEEN = TweenInfo.new(0.2, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
+local NOTIFICATION_TWEEN = TweenInfo.new(0.24, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
+local PROFILE_TWEEN = TweenInfo.new(0.4, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
 
 -- ════════════════════════════════════════════════════════════════════════════
 -- BUILT-IN ICON LIBRARY
@@ -2434,6 +2434,10 @@ function Window:_selectTab(tab)
         end
     end
     tab._page.Visible=true
+    if tab._page:IsA("CanvasGroup") then
+        tab._page.GroupTransparency=1
+        TweenService:Create(tab._page,TWEEN,{GroupTransparency=0}):Play()
+    end
     tween(tab._hBtn,{BackgroundColor3=C.HotbarActive})
     tween(tab._hLabel,{TextColor3=C.White})
     if tab._hDot then tween(tab._hDot,{BackgroundTransparency=0}) end
@@ -2487,7 +2491,7 @@ function Window:AddTab(opts)
     })
     circle(hDot)
 
-    local page=make("Frame",{Size=UDim2.fromScale(1,1),BackgroundTransparency=1,Visible=false,Parent=self._content})
+    local page=make("CanvasGroup",{Size=UDim2.fromScale(1,1),BackgroundTransparency=1,Visible=false,Parent=self._content})
     local header=make("Frame",{Size=UDim2.new(1,0,0,88),BackgroundTransparency=1,Parent=page})
 
     local headerBadge=make("Frame",{Size=UDim2.fromOffset(32,32),Position=UDim2.fromOffset(14,14),BackgroundTransparency=1,Parent=header})
@@ -2585,8 +2589,15 @@ function SubTab:AddButton(opts)
     local btn=make("TextButton",{Text=opts.Name or "Button",Font=Enum.Font.GothamMedium,TextSize=12,TextColor3=primary and C.AccentText or C.TextGray,Size=UDim2.new(1,0,0,28),BackgroundColor3=primary and C.Accent or C.Element,Parent=self._card})
     autoOrder(btn);corner(btn,6)
     if primary then btn.Font=Enum.Font.GothamBold end
+    local bScale=make("UIScale",{Scale=1,Parent=btn})
+    local PRESS=TweenInfo.new(0.08,Enum.EasingStyle.Quad,Enum.EasingDirection.Out)
     btn.MouseEnter:Connect(function() if primary then tween(btn,{BackgroundTransparency=0.14}) else tween(btn,{BackgroundColor3=C.ElementHover}) end end)
-    btn.MouseLeave:Connect(function() if primary then tween(btn,{BackgroundTransparency=0}) else tween(btn,{BackgroundColor3=C.Element}) end end)
+    btn.MouseLeave:Connect(function()
+        if primary then tween(btn,{BackgroundTransparency=0}) else tween(btn,{BackgroundColor3=C.Element}) end
+        TweenService:Create(bScale,TWEEN,{Scale=1}):Play()
+    end)
+    btn.MouseButton1Down:Connect(function() TweenService:Create(bScale,PRESS,{Scale=0.97}):Play() end)
+    btn.MouseButton1Up:Connect(function() TweenService:Create(bScale,TWEEN,{Scale=1}):Play() end)
     btn.MouseButton1Click:Connect(function() fire(opts.Callback) end)
     return btn
 end
