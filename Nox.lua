@@ -33,7 +33,7 @@ local TextService      = game:GetService("TextService")
 local HttpService      = game:GetService("HttpService")
 local Workspace        = game:GetService("Workspace")
 
-local DEFAULT_LOGO = "rbxassetid://105894109382235"
+local DEFAULT_LOGO = "rbxassetid://87405374568068"
 local TWEEN = TweenInfo.new(0.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
 local NOTIFICATION_TWEEN = TweenInfo.new(0.18, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
 local PROFILE_TWEEN = TweenInfo.new(0.32, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
