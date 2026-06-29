@@ -325,6 +325,7 @@ local function normalizeAssetId(value)
     local text = tostring(value)
     if string.match(text, "^rbxassetid://")
         or string.match(text, "^rbxthumb://")
+        or string.match(text, "^rbxasset://")
         or string.match(text, "^https?://") then
         return text
     end
@@ -337,7 +338,7 @@ local function resolveIcon(value)
     local str = tostring(value)
     local key = string.lower(str)
     if ICONS[key] then return "image", ICONS[key] end
-    if string.match(str, "^rbxassetid://") or string.match(str, "^rbxthumb://") or string.match(str, "^https?://") then
+    if string.match(str, "^rbxassetid://") or string.match(str, "^rbxthumb://") or string.match(str, "^rbxasset://") or string.match(str, "^https?://") then
         return "image", str
     end
     if tonumber(str) then return "image", "rbxassetid://" .. str end
