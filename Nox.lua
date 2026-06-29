@@ -175,9 +175,9 @@ local C = {
     HotbarActive = Color3.fromRGB(31, 31, 31),
     HotbarHover  = Color3.fromRGB(38, 38, 38),
     HotbarDot    = Color3.fromRGB(220, 220, 220),
-    Accent       = Color3.fromRGB(255, 138, 12),
-    AccentDim    = Color3.fromRGB(110, 58, 10),
-    AccentText   = Color3.fromRGB(10, 7, 2),
+    Accent       = Color3.fromRGB(0, 120, 255),
+    AccentDim    = Color3.fromRGB(10, 50, 120),
+    AccentText   = Color3.fromRGB(255, 255, 255),
     KnobAccent   = Color3.fromRGB(255, 255, 255),
 }
 
@@ -553,17 +553,17 @@ local function buildTagFrame(player)
     local glowStroke = Instance.new("UIStroke")
     glowStroke.Thickness          = 1.1
     glowStroke.ApplyStrokeMode    = Enum.ApplyStrokeMode.Border
-    glowStroke.Color              = Color3.fromRGB(255, 138, 12)
+    glowStroke.Color              = Color3.fromRGB(0, 120, 255)
     glowStroke.Transparency       = 0.2
     glowStroke.Parent             = root
 
     local glowGrad = Instance.new("UIGradient")
     glowGrad.Color = ColorSequence.new({
-        ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 138, 12)),
-        ColorSequenceKeypoint.new(0.40, Color3.fromRGB(255, 138, 12)),
+        ColorSequenceKeypoint.new(0.00, Color3.fromRGB(0, 120, 255)),
+        ColorSequenceKeypoint.new(0.40, Color3.fromRGB(0, 120, 255)),
         ColorSequenceKeypoint.new(0.50, Color3.fromRGB(255, 255, 255)),
-        ColorSequenceKeypoint.new(0.60, Color3.fromRGB(255, 138, 12)),
-        ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 138, 12)),
+        ColorSequenceKeypoint.new(0.60, Color3.fromRGB(0, 120, 255)),
+        ColorSequenceKeypoint.new(1.00, Color3.fromRGB(0, 120, 255)),
     })
     glowGrad.Transparency = NumberSequence.new({
         NumberSequenceKeypoint.new(0.00, 1.0),
@@ -588,7 +588,7 @@ local function buildTagFrame(player)
     -- avatar ring (orange accent)
     local avRing = Instance.new("UIStroke")
     avRing.Thickness = 1
-    avRing.Color = Color3.fromRGB(255, 138, 12)
+    avRing.Color = Color3.fromRGB(0, 120, 255)
     avRing.Transparency = 0.4
     avRing.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
     avRing.Parent = avatarHolder
@@ -682,7 +682,7 @@ local function buildTagFrame(player)
     badge.Size             = UDim2.fromOffset(badgeW, 16)
     badge.AnchorPoint      = Vector2.new(1, 1)
     badge.Position         = UDim2.new(1, -badgePadR, 1, -9)
-    badge.BackgroundColor3 = Color3.fromRGB(255, 138, 12)
+    badge.BackgroundColor3 = Color3.fromRGB(0, 120, 255)
     badge.BackgroundTransparency = 0.82
     badge.BorderSizePixel  = 0
     badge.ZIndex           = 2
@@ -692,7 +692,7 @@ local function buildTagFrame(player)
     badgeCorner.Parent = badge
     local badgeStroke = Instance.new("UIStroke")
     badgeStroke.Thickness = 0.6
-    badgeStroke.Color = Color3.fromRGB(255, 138, 12)
+    badgeStroke.Color = Color3.fromRGB(0, 120, 255)
     badgeStroke.Transparency = 0.4
     badgeStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
     badgeStroke.Parent = badge
@@ -701,7 +701,7 @@ local function buildTagFrame(player)
     badgeLabel.Text              = ""
     badgeLabel.Font              = Enum.Font.GothamBold
     badgeLabel.TextSize          = 8
-    badgeLabel.TextColor3        = Color3.fromRGB(255, 200, 140)
+    badgeLabel.TextColor3        = Color3.fromRGB(180, 210, 255)
     badgeLabel.BackgroundTransparency = 1
     badgeLabel.Size              = UDim2.fromScale(1, 1)
     badgeLabel.TextXAlignment    = Enum.TextXAlignment.Center
@@ -723,7 +723,7 @@ local function buildTagFrame(player)
 end
 
 -- Outline color: matches the moving UI glow color
-local TAG_OUTLINE_COLOR = Color3.fromRGB(255, 138, 12)
+local TAG_OUTLINE_COLOR = Color3.fromRGB(0, 120, 255)
 
 -- Attach an outline (Highlight, outline-only) to a player's character.
 -- Only applied to OTHER players — never the local player themselves.
@@ -863,9 +863,9 @@ local function addTag(player)
             local pulse = math.sin(glowT * math.pi)                 -- 0 -> 1 -> 0 across the cycle
             local sharp = pulse * pulse                              -- sharpen so the flash is brief
             -- Brightness lerp: base orange -> near-white at the flash peak
-            local r = 253 + (255 - 253) * sharp
-            local g = 128 + (255 - 128) * sharp
-            local b = 0   + (255 - 0)   * sharp
+            local r = 0   + (255 - 0) * sharp
+            local g = 120 + (255 - 120) * sharp
+            local b = 255 + (255 - 255)   * sharp
             outline.OutlineColor = Color3.fromRGB(math.floor(r), math.floor(g), math.floor(b))
             -- Outline dims when the tag is far (matches the tag fade)
             outline.OutlineTransparency = currentFade * 0.85
@@ -1584,7 +1584,7 @@ function Library:CreateWindow(opts)
     -- accent palette derived from the active theme
     local ACC       = C.Accent
     local ACC_DARK  = C.AccentDim or Color3.fromRGB(150, 72, 6)
-    local ACC_LIGHT = Color3.fromRGB(255, 196, 120)
+    local ACC_LIGHT = Color3.fromRGB(120, 180, 255)
 
     local loadingComplete       = not loadingEnabled
     local loadingMotionComplete = not loadingEnabled
@@ -1666,7 +1666,7 @@ function Library:CreateWindow(opts)
         local footer = make("TextLabel", {
             Size = UDim2.fromOffset(400, 16), Position = UDim2.new(0.5, 0, 0.5, 112), AnchorPoint = Vector2.new(0.5, 0.5),
             BackgroundTransparency = 1, Text = loadingFooter, Font = Enum.Font.GothamMedium, TextSize = 11,
-            TextColor3 = Color3.fromRGB(200, 150, 90), TextStrokeColor3 = Color3.fromRGB(0, 0, 0), TextStrokeTransparency = 0.6,
+            TextColor3 = Color3.fromRGB(80, 140, 220), TextStrokeColor3 = Color3.fromRGB(0, 0, 0), TextStrokeTransparency = 0.6,
             TextXAlignment = Enum.TextXAlignment.Center, TextTransparency = 1, ZIndex = 510, Parent = loadingLayer,
         })
 
@@ -1719,7 +1719,7 @@ function Library:CreateWindow(opts)
 
     -- Animated traveling outline
     local mainGlowStroke = make("UIStroke", {
-        Color = Color3.fromRGB(255, 138, 12),
+        Color = Color3.fromRGB(0, 120, 255),
         Thickness = 1.6,
         ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
         Transparency = 0,
@@ -1727,11 +1727,11 @@ function Library:CreateWindow(opts)
     })
     local mainGlowGradient = make("UIGradient", {
         Color = ColorSequence.new({
-            ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 138, 12)),
-            ColorSequenceKeypoint.new(0.42, Color3.fromRGB(255, 138, 12)),
+            ColorSequenceKeypoint.new(0.00, Color3.fromRGB(0, 120, 255)),
+            ColorSequenceKeypoint.new(0.42, Color3.fromRGB(0, 120, 255)),
             ColorSequenceKeypoint.new(0.50, Color3.fromRGB(255, 255, 255)),
-            ColorSequenceKeypoint.new(0.58, Color3.fromRGB(255, 138, 12)),
-            ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 138, 12)),
+            ColorSequenceKeypoint.new(0.58, Color3.fromRGB(0, 120, 255)),
+            ColorSequenceKeypoint.new(1.00, Color3.fromRGB(0, 120, 255)),
         }),
         Transparency = NumberSequence.new({
             NumberSequenceKeypoint.new(0.00, 1.0),
