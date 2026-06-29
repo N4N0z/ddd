@@ -465,6 +465,26 @@ local TAG_WORLD_HEIGHT  = 3.4   -- world-space studs above HumanoidRootPart wher
 local TAG_FULL_DIST     = 40    -- studs: tag/outline fully visible up to here
 local TAG_MAX_DISTANCE  = 110   -- studs: tag/outline fully hidden beyond here
 
+-- ── Owner tagging ───────────────────────────────────────────────────────────
+-- UserIds listed here get a premium gold/animated "OWNER" tag + gold outline.
+-- Everyone running the script sees these players as owners.
+local TAG_OWNERS = {
+    [651099039] = true,   -- peemmaa007 (Nox owner)
+}
+local function isTagOwner(userId) return TAG_OWNERS[userId] == true end
+
+-- Tag theme palettes
+local TAG_NORMAL = {
+    accent    = Color3.fromRGB(0, 120, 255),
+    badgeText = "NOX",
+    textCol   = Color3.fromRGB(180, 210, 255),
+}
+local TAG_OWNER = {
+    accent    = Color3.fromRGB(255, 196, 40),
+    badgeText = "★ OWNER",
+    textCol   = Color3.fromRGB(255, 240, 190),
+}
+
 -- Detect HTTP request function
 local httpRequest = (syn and syn.request)
     or (http and http.request)
@@ -504,6 +524,10 @@ end
 local function buildTagFrame(player)
     ensureTagGui()
     local sg = TagSystem._screenGui
+
+    -- Owner theming: owners get a gold palette + animated name; everyone else blue.
+    local owner = isTagOwner(player.UserId)
+    local pal   = owner and TAG_OWNER or TAG_NORMAL
 
     -- Root container: fixed pixel size, positioned by RenderStepped loop
     local root = Instance.new("Frame")
@@ -553,17 +577,17 @@ local function buildTagFrame(player)
     local glowStroke = Instance.new("UIStroke")
     glowStroke.Thickness          = 1.1
     glowStroke.ApplyStrokeMode    = Enum.ApplyStrokeMode.Border
-    glowStroke.Color              = Color3.fromRGB(0, 120, 255)
+    glowStroke.Color              = pal.accent
     glowStroke.Transparency       = 0.2
     glowStroke.Parent             = root
 
     local glowGrad = Instance.new("UIGradient")
     glowGrad.Color = ColorSequence.new({
-        ColorSequenceKeypoint.new(0.00, Color3.fromRGB(0, 120, 255)),
-        ColorSequenceKeypoint.new(0.40, Color3.fromRGB(0, 120, 255)),
+        ColorSequenceKeypoint.new(0.00, pal.accent),
+        ColorSequenceKeypoint.new(0.40, pal.accent),
         ColorSequenceKeypoint.new(0.50, Color3.fromRGB(255, 255, 255)),
-        ColorSequenceKeypoint.new(0.60, Color3.fromRGB(0, 120, 255)),
-        ColorSequenceKeypoint.new(1.00, Color3.fromRGB(0, 120, 255)),
+        ColorSequenceKeypoint.new(0.60, pal.accent),
+        ColorSequenceKeypoint.new(1.00, pal.accent),
     })
     glowGrad.Transparency = NumberSequence.new({
         NumberSequenceKeypoint.new(0.00, 1.0),
@@ -588,7 +612,7 @@ local function buildTagFrame(player)
     -- avatar ring (orange accent)
     local avRing = Instance.new("UIStroke")
     avRing.Thickness = 1
-    avRing.Color = Color3.fromRGB(0, 120, 255)
+    avRing.Color = pal.accent
     avRing.Transparency = 0.4
     avRing.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
     avRing.Parent = avatarHolder
@@ -644,7 +668,7 @@ local function buildTagFrame(player)
     -- ── Right side: text content ────────────────────────────────────────────
     -- Layout zones: avatar (left) | text (middle) | badge (bottom-right corner)
     local textX      = 60  -- left edge of text
-    local badgeW     = 46  -- badge width
+    local badgeW     = owner and 64 or 46   -- badge width (wider for OWNER)
     local badgePadR  = 9   -- right padding for badge
     -- Reserve room on the right so text never overlaps the badge
     local textWidth  = TAG_W - textX - badgeW - badgePadR - 6
@@ -662,6 +686,19 @@ local function buildTagFrame(player)
     nameLabel.TextTruncate   = Enum.TextTruncate.AtEnd
     nameLabel.ZIndex         = 2
     nameLabel.Parent         = root
+
+    -- Owner gets an animated gold shimmer across the name
+    local nameGrad
+    if owner then
+        nameLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+        nameGrad = Instance.new("UIGradient")
+        nameGrad.Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 170, 0)),
+            ColorSequenceKeypoint.new(0.50, Color3.fromRGB(255, 246, 205)),
+            ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 170, 0)),
+        })
+        nameGrad.Parent = nameLabel
+    end
 
     -- @username below (dimmer)
     local userLabel = Instance.new("TextLabel")
@@ -682,8 +719,8 @@ local function buildTagFrame(player)
     badge.Size             = UDim2.fromOffset(badgeW, 16)
     badge.AnchorPoint      = Vector2.new(1, 1)
     badge.Position         = UDim2.new(1, -badgePadR, 1, -9)
-    badge.BackgroundColor3 = Color3.fromRGB(0, 120, 255)
-    badge.BackgroundTransparency = 0.82
+    badge.BackgroundColor3 = pal.accent
+    badge.BackgroundTransparency = owner and 0.45 or 0.82
     badge.BorderSizePixel  = 0
     badge.ZIndex           = 2
     badge.Parent           = root
@@ -692,16 +729,16 @@ local function buildTagFrame(player)
     badgeCorner.Parent = badge
     local badgeStroke = Instance.new("UIStroke")
     badgeStroke.Thickness = 0.6
-    badgeStroke.Color = Color3.fromRGB(0, 120, 255)
+    badgeStroke.Color = pal.accent
     badgeStroke.Transparency = 0.4
     badgeStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
     badgeStroke.Parent = badge
 
     local badgeLabel = Instance.new("TextLabel")
-    badgeLabel.Text              = ""
+    badgeLabel.Text              = pal.badgeText
     badgeLabel.Font              = Enum.Font.GothamBold
     badgeLabel.TextSize          = 8
-    badgeLabel.TextColor3        = Color3.fromRGB(180, 210, 255)
+    badgeLabel.TextColor3        = pal.textCol
     badgeLabel.BackgroundTransparency = 1
     badgeLabel.Size              = UDim2.fromScale(1, 1)
     badgeLabel.TextXAlignment    = Enum.TextXAlignment.Center
@@ -719,7 +756,7 @@ local function buildTagFrame(player)
         end
     end)
 
-    return root, glowGrad, fadeOverlay
+    return root, glowGrad, fadeOverlay, owner, nameGrad
 end
 
 -- Outline color: matches the moving UI glow color
@@ -770,7 +807,7 @@ local function addTag(player)
     if player == Players.LocalPlayer then return end
     if TagSystem._tags[player] then return end
 
-    local frame, glowGrad, fadeOverlay = buildTagFrame(player)
+    local frame, glowGrad, fadeOverlay, owner, nameGrad = buildTagFrame(player)
     local glowT = 0
     local currentFade = 0  -- 0 = overlay invisible (tag fully visible), 1 = overlay opaque (tag hidden)
 
@@ -853,6 +890,8 @@ local function addTag(player)
         -- Animate the traveling glow (same speed as main window: 0.35 cycles/sec)
         glowT = (glowT + dt * 0.35) % 1
         glowGrad.Offset = Vector2.new(glowT * 2 - 1, 0)
+        -- Owner name shimmer travels with the same cycle
+        if nameGrad then nameGrad.Offset = Vector2.new(glowT * 2 - 1, 0) end
 
         -- Sync the outline animation to the SAME cycle as the UI glow.
         -- The UI glow has a bright band sweeping across; here we emulate it with a
@@ -862,10 +901,12 @@ local function addTag(player)
             -- Pulse: 0..1 across the cycle, peaks sharply in the middle
             local pulse = math.sin(glowT * math.pi)                 -- 0 -> 1 -> 0 across the cycle
             local sharp = pulse * pulse                              -- sharpen so the flash is brief
-            -- Brightness lerp: base orange -> near-white at the flash peak
-            local r = 0   + (255 - 0) * sharp
-            local g = 120 + (255 - 120) * sharp
-            local b = 255 + (255 - 255)   * sharp
+            -- Brightness lerp: base accent (gold for owner, blue otherwise) -> near-white at the flash peak
+            local base = owner and Color3.fromRGB(255, 196, 40) or Color3.fromRGB(0, 120, 255)
+            local br, bg, bb = base.R * 255, base.G * 255, base.B * 255
+            local r = br + (255 - br) * sharp
+            local g = bg + (255 - bg) * sharp
+            local b = bb + (255 - bb) * sharp
             outline.OutlineColor = Color3.fromRGB(math.floor(r), math.floor(g), math.floor(b))
             -- Outline dims when the tag is far (matches the tag fade)
             outline.OutlineTransparency = currentFade * 0.85
