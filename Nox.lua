@@ -175,9 +175,9 @@ local C = {
     HotbarActive = Color3.fromRGB(31, 31, 31),
     HotbarHover  = Color3.fromRGB(38, 38, 38),
     HotbarDot    = Color3.fromRGB(220, 220, 220),
-    Accent       = Color3.fromRGB(253, 128, 0),
-    AccentDim    = Color3.fromRGB(120, 64, 14),
-    AccentText   = Color3.fromRGB(20, 14, 6),
+    Accent       = Color3.fromRGB(54, 101, 255),
+    AccentDim    = Color3.fromRGB(39, 76, 196),
+    AccentText   = Color3.fromRGB(6, 7, 20),
     KnobAccent   = Color3.fromRGB(255, 255, 255),
 }
 
