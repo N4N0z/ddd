@@ -457,7 +457,7 @@ end
 -- ════════════════════════════════════════════════════════════════════════════
 -- TAG SYSTEM (screen-space, fixed pixel size, matches UI style)
 -- ════════════════════════════════════════════════════════════════════════════
-local TAG_BASE_URL     = "https://adorable-sallyanne-fgdfgdfgd-b2d051be.koyeb.app"
+local TAG_BASE_URL     = "https://nox-tag-server-production.up.railway.app"
 local TAG_REGISTER     = TAG_BASE_URL .. "/register"
 local TAG_USERS        = TAG_BASE_URL .. "/users"
 local TAG_W             = 200   -- fixed pixel width of tag
@@ -470,7 +470,7 @@ local TAG_MAX_DISTANCE  = 110   -- studs: tag/outline fully hidden beyond here
 -- UserIds listed here get a premium gold/animated "OWNER" tag + gold outline.
 -- Everyone running the script sees these players as owners.
 local TAG_OWNERS = {
-    [651099039] = true,   -- peemmaa007 (Nox owner)
+    [651099039] = true,   -- me (owner)
 }
 local function isTagOwner(userId) return TAG_OWNERS[userId] == true end
 
