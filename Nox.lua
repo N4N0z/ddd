@@ -1,23 +1,23 @@
---[[
-    Nox UI v2.3 — single-file Roblox UI library
+﻿--[[
+    Nox UI v2.3 â€” single-file Roblox UI library
 
     FEATURES:
-      • Built-in icon library with 40+ curated icons
-      • Hotbar auto-scales width to match tab count
-      • Hotbar colors match menu theme
-      • Hotbar hidden during loading, revealed with main window
-      • Minimize hides both main window AND hotbar
-      • Dropdown: MaxVisible, Searchable, SetOptions, Refresh
-      • Integrated Global Tag System — fixed-size screen-space tags
+      â€¢ Built-in icon library with 40+ curated icons
+      â€¢ Hotbar auto-scales width to match tab count
+      â€¢ Hotbar colors match menu theme
+      â€¢ Hotbar hidden during loading, revealed with main window
+      â€¢ Minimize hides both main window AND hotbar
+      â€¢ Dropdown: MaxVisible, Searchable, SetOptions, Refresh
+      â€¢ Integrated Global Tag System â€” fixed-size screen-space tags
         that match the UI style with traveling glow animation
 
     NEW IN v2.3:
-      • Flag + Config system — give any toggle/slider/dropdown/input/
+      â€¢ Flag + Config system â€” give any toggle/slider/dropdown/input/
         keybind/colorpicker a `Flag` and persist it to disk:
             Library:SaveConfig("name"), Library:LoadConfig("name"),
             Library:ListConfigs(), Library:DeleteConfig("name"),
             Library:GetFlag(flag), Library:SetFlag(flag, value)
-      • Proper connection cleanup — sliders, color pickers, keybinds and
+      â€¢ Proper connection cleanup â€” sliders, color pickers, keybinds and
         window dragging no longer leak UserInputService connections; they
         are tracked per-window and disconnected on Window:Destroy().
 ]]
@@ -38,9 +38,9 @@ local TWEEN = TweenInfo.new(0.2, Enum.EasingStyle.Quint, Enum.EasingDirection.Ou
 local NOTIFICATION_TWEEN = TweenInfo.new(0.24, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
 local PROFILE_TWEEN = TweenInfo.new(0.4, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
 
--- ════════════════════════════════════════════════════════════════════════════
+-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 -- BUILT-IN ICON LIBRARY
--- ════════════════════════════════════════════════════════════════════════════
+-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 local ICONS = {
     home            = "rbxassetid://10723407389",
     dashboard       = "rbxassetid://10709790644",
@@ -206,9 +206,9 @@ local THEMES = {
         HotbarActive = Color3.fromRGB(235, 235, 235),
         HotbarHover  = Color3.fromRGB(229, 229, 229),
         HotbarDot    = Color3.fromRGB(60, 60, 60),
-        Accent       = Color3.fromRGB(255, 138, 12),
-        AccentDim    = Color3.fromRGB(110, 58, 10),
-        AccentText   = Color3.fromRGB(10, 7, 2),
+        Accent       = Color3.fromRGB(0, 120, 255),
+        AccentDim    = Color3.fromRGB(10, 50, 120),
+        AccentText   = Color3.fromRGB(255, 255, 255),
         KnobAccent   = Color3.fromRGB(255, 255, 255),
     },
     OLED = {
@@ -234,9 +234,9 @@ local THEMES = {
         HotbarActive = Color3.fromRGB(12, 12, 12),
         HotbarHover  = Color3.fromRGB(20, 20, 20),
         HotbarDot    = Color3.fromRGB(200, 200, 200),
-        Accent       = Color3.fromRGB(255, 138, 12),
-        AccentDim    = Color3.fromRGB(110, 58, 10),
-        AccentText   = Color3.fromRGB(10, 7, 2),
+        Accent       = Color3.fromRGB(0, 120, 255),
+        AccentDim    = Color3.fromRGB(10, 50, 120),
+        AccentText   = Color3.fromRGB(255, 255, 255),
         KnobAccent   = Color3.fromRGB(255, 255, 255),
     },
 }
@@ -454,9 +454,9 @@ local function createIconElement(parent, iconType, iconValue, size, zindex)
     end
 end
 
--- ════════════════════════════════════════════════════════════════════════════
+-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 -- TAG SYSTEM (screen-space, fixed pixel size, matches UI style)
--- ════════════════════════════════════════════════════════════════════════════
+-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 local TAG_BASE_URL     = "https://nox-tag-server-production.up.railway.app"
 local TAG_REGISTER     = TAG_BASE_URL .. "/register"
 local TAG_USERS        = TAG_BASE_URL .. "/users"
@@ -467,7 +467,7 @@ local TAG_WORLD_HEIGHT  = 3.4   -- world-space studs above HumanoidRootPart wher
 local TAG_FULL_DIST     = 40    -- studs: tag/outline fully visible up to here
 local TAG_MAX_DISTANCE  = 110   -- studs: tag/outline fully hidden beyond here
 
--- ── Owner tagging ───────────────────────────────────────────────────────────
+-- â”€â”€ Owner tagging â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 -- UserIds listed here get a premium gold/animated "OWNER" tag + gold outline.
 -- Everyone running the script sees these players as owners.
 local TAG_OWNERS = {
@@ -492,7 +492,7 @@ local TAG_NORMAL = {
 }
 local TAG_OWNER = {
     accent    = Color3.fromRGB(255, 196, 40),
-    badgeText = "★ OWNER",
+    badgeText = "â˜… OWNER",
     textCol   = Color3.fromRGB(255, 240, 190),
 }
 
@@ -624,7 +624,7 @@ local function buildTagFrame(player)
     })
     glowGrad.Parent = glowStroke
 
-    -- ── Left: Avatar circle ────────────────────────────────────────────────
+    -- â”€â”€ Left: Avatar circle â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     local avatarHolder = Instance.new("Frame")
     avatarHolder.Size              = UDim2.fromOffset(34, 34)
     avatarHolder.Position          = UDim2.fromOffset(9, 9)
@@ -682,7 +682,7 @@ local function buildTagFrame(player)
     odCr.CornerRadius = UDim.new(1, 0)
     odCr.Parent = onlineDot
 
-    -- ── Vertical divider between avatar and text ────────────────────────────
+    -- â”€â”€ Vertical divider between avatar and text â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     local divider = Instance.new("Frame")
     divider.Size             = UDim2.fromOffset(1, 30)
     divider.Position         = UDim2.fromOffset(51, 11)
@@ -691,7 +691,7 @@ local function buildTagFrame(player)
     divider.ZIndex           = 2
     divider.Parent           = root
 
-    -- ── Right side: text content ────────────────────────────────────────────
+    -- â”€â”€ Right side: text content â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     -- Layout zones: avatar (left) | text (middle) | badge (bottom-right corner)
     local textX      = 60  -- left edge of text
     local badgeW     = owner and 64 or 46   -- badge width (wider for OWNER)
@@ -789,7 +789,7 @@ end
 local TAG_OUTLINE_COLOR = Color3.fromRGB(0, 120, 255)
 
 -- Attach an outline (Highlight, outline-only) to a player's character.
--- Only applied to OTHER players — never the local player themselves.
+-- Only applied to OTHER players â€” never the local player themselves.
 local function applyOutline(player)
     if player == Players.LocalPlayer then return nil end
     local char = player.Character
@@ -901,7 +901,7 @@ local function addTag(player)
         end
 
         frame.Visible = true
-        -- Force fixed pixel size every frame — never let it scale
+        -- Force fixed pixel size every frame â€” never let it scale
         frame.Size = UDim2.fromOffset(TAG_W, TAG_H)
         if fadeOverlay and fadeOverlay.Parent then
             fadeOverlay.BackgroundTransparency = 1 - currentFade
@@ -1053,9 +1053,9 @@ local function startTagSystem()
     end)
 end
 
--- ════════════════════════════════════════════════════════════════════════════
+-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 -- LIBRARY
--- ════════════════════════════════════════════════════════════════════════════
+-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 local Library = {
     Version       = "2.3",
     Themes        = THEMES,
@@ -1133,9 +1133,9 @@ function Library:GetTheme() return Library._currentTheme end
 function Library:GetIcons() return ICONS end
 function Library:GetIcon(name) return ICONS[string.lower(tostring(name or ""))] end
 
--- ════════════════════════════════════════════════════════════════════════════
+-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 -- FLAGS + CONFIG PERSISTENCE
--- ════════════════════════════════════════════════════════════════════════════
+-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 -- Read the live value of a flagged element.
 function Library:GetFlag(flag, default)
     local entry = Library.Flags[tostring(flag)]
@@ -1198,7 +1198,7 @@ function Library:LoadConfigData(data)
     return true
 end
 
--- ── File-system helpers (executor environment) ──────────────────────────────
+-- â”€â”€ File-system helpers (executor environment) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 local function hasFileApi()
     return type(writefile) == "function" and type(readfile) == "function"
 end
@@ -1328,10 +1328,10 @@ function Library:DestroyAll()
     table.clear(Library.Flags)
 end
 
--- ════════════════════════════════════════════════════════════════════════════
+-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 -- MUSIC PLAYER BUILDER (kept as its own function so its locals do not count
 -- against CreateWindow's Luau local-register budget)
--- ════════════════════════════════════════════════════════════════════════════
+-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 local function buildMusicPlayer(cfg)
     local screenGui      = cfg.screenGui
     local profileWidth   = cfg.profileWidth
@@ -1386,7 +1386,7 @@ local function buildMusicPlayer(cfg)
         return string.format("%d:%02d", math.floor(t / 60), t % 60)
     end
 
-    -- ── Panel shell (compact, matches the profile / performance panels) ─────
+    -- â”€â”€ Panel shell (compact, matches the profile / performance panels) â”€â”€â”€â”€â”€
     local musicPanel = make("CanvasGroup", { Name = "MusicPlayer", AnchorPoint = Vector2.new(1, 1), Position = musicClosedPos, Size = UDim2.fromOffset(musicWidth, fullHeight), BackgroundColor3 = C.CardBg, GroupTransparency = 1, ClipsDescendants = true, ZIndex = 150, Parent = screenGui })
     corner(musicPanel, 14)
 
@@ -1401,7 +1401,7 @@ local function buildMusicPlayer(cfg)
     local musicCloseBtn = make("TextButton", { Text = "", AnchorPoint = Vector2.new(1, 0), Position = UDim2.new(1, 0, 0, 0), Size = UDim2.fromOffset(13, 13), BackgroundColor3 = CLOSE_RED, ZIndex = 153, Parent = controls })
     circle(musicCloseBtn)
 
-    -- Now playing (text only — no album-art tile)
+    -- Now playing (text only â€” no album-art tile)
     local npTitle = make("TextLabel", { Text = "Nothing playing", Font = Enum.Font.GothamBold, TextSize = 14, TextColor3 = C.White, TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd, BackgroundTransparency = 1, Position = UDim2.fromOffset(16, 58), Size = UDim2.new(1, -32, 0, 18), ZIndex = 152, Parent = musicPanel })
     local npSub = make("TextLabel", { Text = "Add audio to the " .. MUSIC_FOLDER .. " folder", Font = Enum.Font.GothamMedium, TextSize = 11, TextColor3 = C.TextGray, TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd, BackgroundTransparency = 1, Position = UDim2.fromOffset(16, 78), Size = UDim2.new(1, -32, 0, 15), ZIndex = 152, Parent = musicPanel })
 
@@ -1457,12 +1457,12 @@ local function buildMusicPlayer(cfg)
     local list = make("ScrollingFrame", { Position = UDim2.fromOffset(16, 238), Size = UDim2.new(1, -32, 1, -254), BackgroundColor3 = C.WindowBg, ScrollBarThickness = 3, ScrollBarImageColor3 = C.Border, CanvasSize = UDim2.new(), AutomaticCanvasSize = Enum.AutomaticSize.Y, ZIndex = 152, Parent = musicPanel })
     corner(list, 11); pad(list, 6, 6, 6, 6)
     make("UIListLayout", { Padding = UDim.new(0, 5), SortOrder = Enum.SortOrder.LayoutOrder, Parent = list })
-    local emptyLbl = make("TextLabel", { Text = "No tracks — drop audio files in the\n" .. MUSIC_FOLDER .. " folder, then hit refresh", Font = Enum.Font.GothamMedium, TextSize = 11, TextColor3 = C.TextDim, BackgroundTransparency = 1, AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5), Size = UDim2.new(1, -20, 0, 40), ZIndex = 153, Parent = list })
+    local emptyLbl = make("TextLabel", { Text = "No tracks â€” drop audio files in the\n" .. MUSIC_FOLDER .. " folder, then hit refresh", Font = Enum.Font.GothamMedium, TextSize = 11, TextColor3 = C.TextDim, BackgroundTransparency = 1, AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5), Size = UDim2.new(1, -20, 0, 40), ZIndex = 153, Parent = list })
 
     -- elements hidden when minimized
     local lowerEls = { volRow, plLabel, refreshBtn, list }
 
-    -- ── Behaviour ─────────────────────────────────────────────────────────
+    -- â”€â”€ Behaviour â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     local rows = {}
     local refreshPlaylist, playIndex, updateNowPlaying
 
@@ -1719,7 +1719,7 @@ function Library:CreateWindow(opts)
     })
     local containerScale = make("UIScale", { Scale = 1, Parent = container })
 
-    -- ── LOADING SCREEN (slam-in intro, themed with the accent colour) ─────
+    -- â”€â”€ LOADING SCREEN (slam-in intro, themed with the accent colour) â”€â”€â”€â”€â”€
     local loadingEnabled      = opts.LoadingAnimation ~= false
     local loadingDuration     = math.clamp(tonumber(opts.LoadingDuration) or 2.65, 1.5, 8)
     local loadingText         = tostring(opts.LoadingText or opts.Name or "Nox")
@@ -1854,7 +1854,7 @@ function Library:CreateWindow(opts)
         end)
     end
 
-    -- ── MAIN WINDOW ───────────────────────────────────────────────────────
+    -- â”€â”€ MAIN WINDOW â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     local main = make("Frame", {
         Name = "Main", Size = windowSize,
         Position = UDim2.fromOffset(0, 0),
@@ -1900,7 +1900,7 @@ function Library:CreateWindow(opts)
         mainGlowGradient.Offset = Vector2.new(glowT * 2 - 1, 0)
     end)
 
-    -- ── HOTBAR ────────────────────────────────────────────────────────────
+    -- â”€â”€ HOTBAR â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     local hotbar = make("Frame", {
         Name = "TabHotbar",
         AnchorPoint = Vector2.new(0.5, 0),
@@ -1992,7 +1992,7 @@ function Library:CreateWindow(opts)
         function() if onDragStart then onDragStart() end end,
         function() if onDragEnd then onDragEnd() end end)
 
-    -- ── SIDEBAR ───────────────────────────────────────────────────────────
+    -- â”€â”€ SIDEBAR â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     local sidebar = make("Frame", { Size=UDim2.new(0,190,1,0), BackgroundTransparency=1, Parent=main })
     local brand = make("Frame", { Name="Brand", Position=UDim2.fromOffset(12,12), Size=UDim2.new(1,-24,0,54), BackgroundColor3=C.CardBg, Parent=sidebar })
     corner(brand,10); stroke(brand,C.Border)
@@ -2022,7 +2022,7 @@ function Library:CreateWindow(opts)
     make("UIGradient",{Rotation=90,Transparency=NumberSequence.new({NumberSequenceKeypoint.new(0,1),NumberSequenceKeypoint.new(0.5,0.5),NumberSequenceKeypoint.new(1,1)}),Parent=divLine})
     local content = make("Frame",{Position=UDim2.fromOffset(191,0),Size=UDim2.new(1,-191,1,0),BackgroundTransparency=1,Parent=main})
 
-    -- ── DRAG FADE: smoothly hide inner content while dragging the window ──
+    -- â”€â”€ DRAG FADE: smoothly hide inner content while dragging the window â”€â”€
     -- The window frame (background + border + traveling glow) stays visible;
     -- everything inside (sidebar, divider, content, corner controls) fades out.
     local DRAG_FADE_TWEEN = TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
@@ -2071,7 +2071,7 @@ function Library:CreateWindow(opts)
     onDragStart = function() setInnerHidden(true) end
     onDragEnd   = function() setInnerHidden(false) end
 
-    -- ── NOTIFICATIONS ─────────────────────────────────────────────────────
+    -- â”€â”€ NOTIFICATIONS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     local notificationHolder = make("Frame",{
         Name="Notifications",AnchorPoint=Vector2.new(1,0),
         Position=UDim2.new(1,-16,0,16),Size=UDim2.new(0,300,1,-32),
@@ -2079,7 +2079,7 @@ function Library:CreateWindow(opts)
     })
     make("UIListLayout",{FillDirection=Enum.FillDirection.Vertical,HorizontalAlignment=Enum.HorizontalAlignment.Right,SortOrder=Enum.SortOrder.LayoutOrder,Padding=UDim.new(0,6),Parent=notificationHolder})
 
-    -- ── PROFILE + PERFORMANCE ─────────────────────────────────────────────
+    -- â”€â”€ PROFILE + PERFORMANCE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     local localPlayer      = Players.LocalPlayer
     local profileKey       = typeof(opts.ProfileKey)=="EnumItem" and opts.ProfileKey or Enum.KeyCode.K
     local toggleKey        = (opts.ToggleKey==false) and nil or (typeof(opts.ToggleKey)=="EnumItem" and opts.ToggleKey or Enum.KeyCode.RightShift)
@@ -2089,7 +2089,7 @@ function Library:CreateWindow(opts)
     local profileClosedPos = UDim2.new(1,profileWidth+28,1,-bottomMargin)
     local profileOpen      = false
 
-    -- Music player (built below) — forward declared so the header toggle
+    -- Music player (built below) â€” forward declared so the header toggle
     -- button and setProfileVisible can reference them.
     local toggleMusic            -- assigned when the music panel is built
     local closeMusic             -- assigned when the music panel is built
@@ -2255,7 +2255,7 @@ function Library:CreateWindow(opts)
         conns = musicConns, opts = opts,
     })
 
-    -- ── ADMIN PANEL (only built for users in ADMIN_USER_IDS) ──────────────
+    -- â”€â”€ ADMIN PANEL (only built for users in ADMIN_USER_IDS) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     -- Slides in from the bottom-left with the profile panel. Lists every
     -- active client from the presence server with a Disconnect button that
     -- queues that user for a server-side kick.
@@ -2471,10 +2471,10 @@ function Library:CreateWindow(opts)
         table.insert(windowRef._connections, { Disconnect = function() TagSystem:RemoveListener(adminListener) end })
     end
 
-    -- ── PERSISTENCE GUARD ─────────────────────────────────────────────────
+    -- â”€â”€ PERSISTENCE GUARD â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     -- Some games / anti-cheats strip GUIs (from CoreGui or PlayerGui) when the
-    -- character respawns, which made the whole window — and the minimized
-    -- burger button in the top corner — vanish on death. Re-parent the window
+    -- character respawns, which made the whole window â€” and the minimized
+    -- burger button in the top corner â€” vanish on death. Re-parent the window
     -- back to a safe host whenever it gets detached, so it never disappears.
     -- The burger button lives under screenGui too, so it returns with it.
     local function resolveHost()
@@ -2523,7 +2523,7 @@ function Library:CreateWindow(opts)
         table.insert(windowRef._connections,tkConn)
     end
 
-    -- ── MOBILE / RESPONSIVE SCALING ──────────────────────────────────────
+    -- â”€â”€ MOBILE / RESPONSIVE SCALING â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     -- The side panels live directly under the ScreenGui (not the container),
     -- so each gets its own UIScale that we drive together with the container.
     local function ensureScale(inst)
@@ -2559,7 +2559,7 @@ function Library:CreateWindow(opts)
         end
     end
 
-    -- ── UI VISIBILITY TOGGLE (keyboard-free; drives the floating button) ──
+    -- â”€â”€ UI VISIBILITY TOGGLE (keyboard-free; drives the floating button) â”€â”€
     local uiHidden = false
     local function setUIVisible(v)
         v = (v ~= false)
@@ -2632,9 +2632,9 @@ function Library:CreateWindow(opts)
     return windowRef
 end
 
--- ════════════════════════════════════════════════════════════════════════════
+-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 -- WINDOW METHODS
--- ════════════════════════════════════════════════════════════════════════════
+-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function Window:SetVisible(v) self.ScreenGui.Enabled = v==true end
 function Window:Toggle() self.ScreenGui.Enabled = not self.ScreenGui.Enabled; return self.ScreenGui.Enabled end
 function Window:SetUIVisible(v)
@@ -2665,7 +2665,7 @@ function Window:Notify(opts)
     corner(card,6);stroke(card,C.Border)
     make("TextLabel",{Text=title,Font=Enum.Font.GothamMedium,TextSize=12,TextColor3=C.White,TextXAlignment=Enum.TextXAlignment.Left,TextTruncate=Enum.TextTruncate.AtEnd,BackgroundTransparency=1,Position=UDim2.fromOffset(12,9),Size=UDim2.new(1,-42,0,16),ZIndex=202,Parent=card})
     make("TextLabel",{Text=body,Font=Enum.Font.Gotham,TextSize=11,TextColor3=C.TextDim,TextXAlignment=Enum.TextXAlignment.Left,TextYAlignment=Enum.TextYAlignment.Top,TextWrapped=true,BackgroundTransparency=1,Position=UDim2.fromOffset(12,29),Size=UDim2.new(1,-24,0,24),ZIndex=202,Parent=card})
-    local xb=make("TextButton",{Text="×",Font=Enum.Font.Gotham,TextSize=14,TextColor3=C.TextDim,AnchorPoint=Vector2.new(1,0),Position=UDim2.new(1,-7,0,5),Size=UDim2.fromOffset(20,20),BackgroundTransparency=1,ZIndex=204,Parent=card})
+    local xb=make("TextButton",{Text="Ã—",Font=Enum.Font.Gotham,TextSize=14,TextColor3=C.TextDim,AnchorPoint=Vector2.new(1,0),Position=UDim2.new(1,-7,0,5),Size=UDim2.fromOffset(20,20),BackgroundTransparency=1,ZIndex=204,Parent=card})
     local closed=false; local handle={}
     local function close(reason)
         if closed then return end; closed=true
@@ -2692,9 +2692,9 @@ function Window:Destroy()
     if self.ScreenGui then self.ScreenGui:Destroy() end
 end
 
--- ════════════════════════════════════════════════════════════════════════════
+-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 -- TAB SYSTEM
--- ════════════════════════════════════════════════════════════════════════════
+-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function Window:_selectTab(tab)
     if self._activeTab==tab then return end
     local prev=self._activeTab; self._activeTab=tab
@@ -2801,9 +2801,9 @@ function Window:AddTab(opts)
     return tab
 end
 
--- ════════════════════════════════════════════════════════════════════════════
+-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 -- SUBTAB + ELEMENTS
--- ════════════════════════════════════════════════════════════════════════════
+-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function Tab:_selectSub(sub)
     if self._activeSub==sub then return end
     local prev=self._activeSub; self._activeSub=sub
@@ -3110,7 +3110,7 @@ function SubTab:AddMultiDropdown(opts)
                 autoOrder(ob2);corner(ob2,4)
                 local box=make("Frame",{AnchorPoint=Vector2.new(0,0.5),Position=UDim2.new(0,8,0.5,0),Size=UDim2.fromOffset(12,12),BackgroundColor3=selected[o] and C.White or C.Badge,Parent=ob2})
                 corner(box,3)
-                local check=make("TextLabel",{Text="✓",Font=Enum.Font.GothamBold,TextSize=10,TextColor3=C.KnobOn,BackgroundTransparency=1,Size=UDim2.fromScale(1,1),Visible=selected[o]==true,Parent=box})
+                local check=make("TextLabel",{Text="âœ“",Font=Enum.Font.GothamBold,TextSize=10,TextColor3=C.KnobOn,BackgroundTransparency=1,Size=UDim2.fromScale(1,1),Visible=selected[o]==true,Parent=box})
                 make("TextLabel",{Text=os,Font=Enum.Font.Gotham,TextSize=12,TextColor3=selected[o] and C.White or C.TextGray,TextXAlignment=Enum.TextXAlignment.Left,TextTruncate=Enum.TextTruncate.AtEnd,BackgroundTransparency=1,Position=UDim2.fromOffset(26,0),Size=UDim2.new(1,-32,1,0),Parent=ob2})
                 ob2.MouseEnter:Connect(function() if not selected[o] then tween(ob2,{BackgroundColor3=C.ElementHover}) end end)
                 ob2.MouseLeave:Connect(function() tween(ob2,{BackgroundColor3=C.Element}) end)
@@ -3167,9 +3167,9 @@ function SubTab:AddMultiDropdown(opts)
     })
 end
 
--- ════════════════════════════════════════════════════════════════════════════
+-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 -- COLOR HELPERS
--- ════════════════════════════════════════════════════════════════════════════
+-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 local function colorToHex(c)
     return string.format("#%02X%02X%02X",
         math.floor(c.R*255+0.5), math.floor(c.G*255+0.5), math.floor(c.B*255+0.5))
