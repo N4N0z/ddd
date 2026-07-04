@@ -1,4 +1,4 @@
-﻿--[[
+--[[
     Nox UI v2.3 â€” single-file Roblox UI library
 
     FEATURES:
