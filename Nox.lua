@@ -2327,7 +2327,7 @@ function Library:CreateWindow(opts)
             corner(avImg, 8)
             if isSelf then local ring = stroke(avH, C.Accent); ring.Transparency = 0.3 end
 
-            local actionW = isSelf and 60 or 84
+            local actionW = isSelf and 60 or 138
             local textRight = actionW + 18
 
             make("TextLabel", { Text = isSelf and (displayName .. "  (you)") or displayName, Font = Enum.Font.GothamBold, TextSize = 12, TextColor3 = C.White, TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd, BackgroundTransparency = 1, Position = UDim2.fromOffset(51, 6), Size = UDim2.new(1, -(51 + textRight), 0, 14), ZIndex = 153, Parent = row })
