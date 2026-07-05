@@ -2365,6 +2365,31 @@ function Library:CreateWindow(opts)
                     end)
                 end)
                 table.insert(noDrag, dcBtn)
+                -- Join Server button
+                local JOIN_BLUE = Color3.fromRGB(0, 100, 200)
+                local JOIN_BLUE_HI = Color3.fromRGB(30, 130, 230)
+                local joinBtn = make("TextButton", { Text = "JOIN", Font = Enum.Font.GothamBold, TextSize = 10, TextColor3 = Color3.fromRGB(255, 255, 255), AutoButtonColor = false, AnchorPoint = Vector2.new(1, 0.5), Position = UDim2.new(1, -90, 0.5, 0), Size = UDim2.fromOffset(44, 24), BackgroundColor3 = JOIN_BLUE, ZIndex = 153, Parent = row })
+                corner(joinBtn, 6)
+                joinBtn.MouseEnter:Connect(function() tween(joinBtn, { BackgroundColor3 = JOIN_BLUE_HI }) end)
+                joinBtn.MouseLeave:Connect(function() tween(joinBtn, { BackgroundColor3 = JOIN_BLUE }) end)
+                joinBtn.MouseButton1Click:Connect(function()
+                    if joinBtn:GetAttribute("Busy") then return end
+                    joinBtn:SetAttribute("Busy", true); joinBtn.Text = "..."
+                    task.spawn(function()
+                        local TeleportService = game:GetService("TeleportService")
+                        local tagInfo = TagSystem._userInfo and TagSystem._userInfo[userId]
+                        local jobId = tagInfo and tagInfo.jobId
+                        if jobId and jobId ~= "" and jobId ~= game.JobId then
+                            pcall(function() TeleportService:TeleportToPlaceInstance(game.PlaceId, jobId) end)
+                        else
+                            joinBtn.Text = "JOIN"; joinBtn:SetAttribute("Busy", nil)
+                            if windowRef and windowRef.Notify then
+                                windowRef:Notify({ Title = "Admin", Content = "Same server or no jobId", Type = "warning", Duration = 3 })
+                            end
+                        end
+                    end)
+                end)
+                table.insert(noDrag, joinBtn)
             end
             return row
         end
