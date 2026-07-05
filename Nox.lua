@@ -2318,7 +2318,7 @@ function Library:CreateWindow(opts)
             local displayName = (info.displayName ~= nil and info.displayName ~= "") and info.displayName or ("User " .. tostring(userId))
             local handle = (info.name ~= nil and info.name ~= "") and ("@" .. info.name) or "@unknown"
 
-            local row = make("Frame", { Size = UDim2.new(1, 0, 0, isSelf and 50 or 70), BackgroundColor3 = C.WindowBg, LayoutOrder = order, ZIndex = 152, Parent = listFrame })
+            local row = make("Frame", { Size = UDim2.new(1, 0, 0, isSelf and 50 or 76), BackgroundColor3 = C.WindowBg, LayoutOrder = order, ZIndex = 152, Parent = listFrame })
             corner(row, 9); stroke(row, C.Border)
 
             local avH = make("Frame", { Position = UDim2.fromOffset(7, 7), Size = UDim2.fromOffset(36, 36), BackgroundColor3 = C.Element, ZIndex = 153, Parent = row })
@@ -2368,7 +2368,7 @@ function Library:CreateWindow(opts)
                 -- Join Server button
                 local JOIN_BLUE = Color3.fromRGB(0, 100, 200)
                 local JOIN_BLUE_HI = Color3.fromRGB(30, 130, 230)
-                local joinBtn = make("TextButton", { Text = "JOIN", Font = Enum.Font.GothamBold, TextSize = 10, TextColor3 = Color3.fromRGB(255, 255, 255), AutoButtonColor = false, AnchorPoint = Vector2.new(1, 0), Position = UDim2.new(1, -8, 0, 42), Size = UDim2.fromOffset(78, 22), BackgroundColor3 = JOIN_BLUE, ZIndex = 153, Parent = row })
+                local joinBtn = make("TextButton", { Text = "JOIN", Font = Enum.Font.GothamBold, TextSize = 10, TextColor3 = Color3.fromRGB(255, 255, 255), AutoButtonColor = false, AnchorPoint = Vector2.new(1, 0), Position = UDim2.new(1, -8, 0, 48), Size = UDim2.fromOffset(78, 22), BackgroundColor3 = JOIN_BLUE, ZIndex = 153, Parent = row })
                 corner(joinBtn, 6)
                 joinBtn.MouseEnter:Connect(function() tween(joinBtn, { BackgroundColor3 = JOIN_BLUE_HI }) end)
                 joinBtn.MouseLeave:Connect(function() tween(joinBtn, { BackgroundColor3 = JOIN_BLUE }) end)
