@@ -2332,7 +2332,12 @@ function Library:CreateWindow(opts)
 
             make("TextLabel", { Text = isSelf and (displayName .. "  (you)") or displayName, Font = Enum.Font.GothamBold, TextSize = 12, TextColor3 = C.White, TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd, BackgroundTransparency = 1, Position = UDim2.fromOffset(51, 6), Size = UDim2.new(1, -(51 + textRight), 0, 14), ZIndex = 153, Parent = row })
             make("TextLabel", { Text = handle, Font = Enum.Font.Gotham, TextSize = 10, TextColor3 = C.TextDim, TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd, BackgroundTransparency = 1, Position = UDim2.fromOffset(51, 21), Size = UDim2.new(1, -(51 + textRight), 0, 12), ZIndex = 153, Parent = row })
-            make("TextLabel", { Text = "ID " .. tostring(userId), Font = Enum.Font.GothamMedium, TextSize = 9, TextColor3 = C.TextDim, TextXAlignment = Enum.TextXAlignment.Left, BackgroundTransparency = 1, Position = UDim2.fromOffset(51, 34), Size = UDim2.new(1, -(51 + textRight), 0, 11), ZIndex = 153, Parent = row })
+            local placeText = "ID " .. tostring(userId)
+            if info.placeId and info.placeId ~= 0 then
+                local nameOk, placeName = pcall(function() return game:GetService("MarketplaceService"):GetProductInfo(info.placeId).Name end)
+                placeText = nameOk and placeName or ("Place " .. tostring(info.placeId))
+            end
+            make("TextLabel", { Text = placeText, Font = Enum.Font.GothamMedium, TextSize = 9, TextColor3 = C.TextDim, TextXAlignment = Enum.TextXAlignment.Left, BackgroundTransparency = 1, Position = UDim2.fromOffset(51, 34), Size = UDim2.new(1, -(51 + textRight), 0, 11), ZIndex = 153, Parent = row })
 
             if isSelf then
                 local selfBadge = make("Frame", { AnchorPoint = Vector2.new(1, 0.5), Position = UDim2.new(1, -8, 0.5, 0), Size = UDim2.fromOffset(54, 22), BackgroundColor3 = C.Badge, ZIndex = 153, Parent = row })
