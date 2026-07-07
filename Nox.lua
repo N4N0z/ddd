@@ -701,7 +701,7 @@ local function buildTagFrame(player)
 
     -- Player display name (bold, prominent)
     local nameLabel = Instance.new("TextLabel")
-    nameLabel.Text           = player.DisplayName
+    nameLabel.Text           = (opts.HideProfile and "Nox User") or player.DisplayName
     nameLabel.Font           = Enum.Font.GothamBold
     nameLabel.TextSize       = 13
     nameLabel.TextColor3     = Color3.fromRGB(245, 245, 248)
@@ -728,7 +728,7 @@ local function buildTagFrame(player)
 
     -- @username below (dimmer)
     local userLabel = Instance.new("TextLabel")
-    userLabel.Text           = "@" .. player.Name
+    userLabel.Text           = (opts.HideProfile and "@noxhub") or ("@" .. player.Name)
     userLabel.Font           = Enum.Font.Gotham
     userLabel.TextSize       = 11
     userLabel.TextColor3     = Color3.fromRGB(140, 140, 148)
